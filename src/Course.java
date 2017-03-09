@@ -26,6 +26,8 @@ public class Course implements Serializable{
     
     private String courseName;
     
+    private static final long serialVersionUID = -4092905784735758779L;
+    
     //custructor
     public Course(){
     
@@ -64,9 +66,7 @@ public class Course implements Serializable{
             
             while((newLine = input.readLine()) != null){
             
-                newLine = newLine.replace(",", "");
-                
-                name = newLine.split(" ");
+                name = newLine.split(", ");
                 
                 studentNames.add(name[1] + " " + name[0]);
             
@@ -89,13 +89,13 @@ public class Course implements Serializable{
     //--------------------------------------------------------------------------
     
     //saveCourse method allows users to save a course that that previously created.
-    public void saveCourse(){
+    public void saveCourse(Course course){
                 
         try{
             
             ObjectOutputStream objectOut = new ObjectOutputStream(new FileOutputStream(new File(this.courseName + ".dat")));
             
-            objectOut.writeObject(this);
+            objectOut.writeObject(course);
             
             objectOut.close();
                     
@@ -116,7 +116,7 @@ public class Course implements Serializable{
     //--------------------------------------------------------------------------
     
     //loadCourse method allows users to load a previously saved course 
-    public void outputNames(File loadFile){
+    public void outputNames(){
     
         for(int x = 0;x < this.studentNames.size();x++){
         
