@@ -15,7 +15,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import java.net.URL;
-import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -55,13 +54,28 @@ public class Pick_A_Student extends Application {
                 
         Scene scene = new Scene(mainPane, screenHeight, screenWidth);
         
-        ImageView background = new ImageView(new Image("Background.png"));
+        ImageView background = new ImageView(new Image("Resources/Background.png"));
         
-        primaryStage.getIcons().add(new Image("file:Rouse.jpg"));
+        primaryStage.getIcons().add(new Image("Resources/Rouse.jpg"));
         
-        final URL buttonSoundFile = getClass().getResource("Click.mp3");
+        //----------------------------------------------------------------------
+        //Sound Effects
+        
+        final URL buttonSoundFile = getClass().getResource("Resources/Click.mp3");
         final Media buttonSound = new Media(buttonSoundFile.toString());
         MediaPlayer playButtonSound = new MediaPlayer(buttonSound);
+        
+        final URL snoringSoundFile = getClass().getResource("Resources/Snoring.wav");
+        final Media snoringSound = new Media(snoringSoundFile.toString());
+        MediaPlayer playSnoringSound = new MediaPlayer(snoringSound);
+        
+        final URL cricketsSoundFile = getClass().getResource("Resources/Cricket.wav");
+        final Media cricketsSound = new Media(cricketsSoundFile.toString());
+        MediaPlayer playCricketsSound = new MediaPlayer(cricketsSound);
+        
+        final URL applauseSoundFile = getClass().getResource("Resources/Applause.mp3");
+        final Media applauseSound = new Media(applauseSoundFile.toString());
+        MediaPlayer playApplauseSound = new MediaPlayer(applauseSound);
         
         //----------------------------------------------------------------------
         //Left GUI Elements
@@ -70,17 +84,7 @@ public class Pick_A_Student extends Application {
         Menu fileMenu = new Menu("File");
         
         MenuItem loadClass = new MenuItem("Load Class");
-            Stage loadClassStage = new Stage();
-            StackPane loadClassPane = new StackPane();
-            Scene loadClassScene = new Scene(loadClassPane, 512, 256);
-            ChoiceBox courseNames = new ChoiceBox();
-            courseNames.setMaxWidth(200);
-            Button selectCourseName = new Button("Load");
-            VBox loadClassVBox = new VBox(50);
-            loadClassVBox.setAlignment(Pos.CENTER);
-            loadClassVBox.getChildren().addAll(courseNames, selectCourseName);
-            loadClassPane.getChildren().addAll(new ImageView(new Image("PopupBackground.png")), loadClassVBox);
-        
+                
         MenuItem createClass = new MenuItem("Create Class");
             Stage createClassStage = new Stage();
             StackPane createClassPane = new StackPane();
@@ -101,12 +105,10 @@ public class Pick_A_Student extends Application {
             createClassButtons.getChildren().addAll(importFileButton, okImportFile);
             createClassButtons.setAlignment(Pos.BOTTOM_CENTER);
             createClassButtons.setPadding(new Insets(0, 0, 30, 0));
-            createClassPane.getChildren().addAll(new ImageView(new Image("PopupBackground.png")), createClassTxtFlds, createClassButtons);
-        
+            createClassPane.getChildren().addAll(new ImageView(new Image("Resources/PopupBackground.png")), createClassTxtFlds, createClassButtons);
         
         fileMenu.getItems().addAll(createClass, loadClass);
-        
-            
+         
         //Tally Menu
         Menu tallyMenu = new Menu("Tally");
         MenuItem absent = new MenuItem("Absent Tally");    
@@ -155,7 +157,7 @@ public class Pick_A_Student extends Application {
                     + "5. Load a class by clicking File -> Load Class. Select\n"
                     + " the course you would like to ask questions from.");
             instructions.setAlignment(Pos.CENTER);
-            instructionsMenuPane.getChildren().addAll(new ImageView(new Image("PopupBackground.png")), instructions);
+            instructionsMenuPane.getChildren().addAll(new ImageView(new Image("Resources/PopupBackground.png")), instructions);
             
         MenuBar menu = new MenuBar();
         
@@ -182,7 +184,7 @@ public class Pick_A_Student extends Application {
         //Pick A Student Button
         Circle pickAStudent = new Circle(125);
         pickAStudent.setFill(Color.RED);
-        ImagePattern nextPicture = new ImagePattern(new Image("Next.png"));
+        ImagePattern nextPicture = new ImagePattern(new Image("Resources/Next.png"));
         pickAStudent.setFill(nextPicture); 
         HBox pickAStudentBtn = new HBox();
         pickAStudentBtn.getChildren().addAll(pickAStudent);
@@ -191,33 +193,27 @@ public class Pick_A_Student extends Application {
         
         //Tally Buttons
         //Creating and editing the gradeButtons themselves
-        Circle horrifiedFace = new Circle(60);
-        horrifiedFace.setFill(Color.WHITE);
-        horrifiedFace.setStroke(Color.BLACK);
-        ImagePattern horrifiedImage = new ImagePattern(new Image("Horrified.jpg"));
-        horrifiedFace.setFill(horrifiedImage);
+        Circle asleepFace = new Circle(60);
+        ImagePattern horrifiedImage = new ImagePattern(new Image("Resources/AsleepEmoji.png"));
+        asleepFace.setFill(horrifiedImage);
         
         Circle unsure = new Circle(60);
-        unsure.setFill(Color.WHITE);
-        unsure.setStroke(Color.BLACK);
-        ImagePattern unsureImage = new ImagePattern(new Image("Unsure.jpg"));
+        ImagePattern unsureImage = new ImagePattern(new Image("Resources/Unsure.jpg"));
         unsure.setFill(unsureImage);
         
         Circle happyFace = new Circle(60);
-        happyFace.setFill(Color.WHITE);
-        happyFace.setStroke(Color.BLACK);
-        ImagePattern happyImage = new ImagePattern(new Image("HaloEmoji.jpg"));
+        ImagePattern happyImage = new ImagePattern(new Image("Resources/HaloEmoji.jpg"));
         happyFace.setFill(happyImage);
         
         //Adding all gradeButtons to HBox
         HBox gradeButtons = new HBox(90);
-        gradeButtons.getChildren().addAll(horrifiedFace, unsure, happyFace);
+        gradeButtons.getChildren().addAll(asleepFace, unsure, happyFace);
         gradeButtons.setAlignment(Pos.BOTTOM_CENTER);
         gradeButtons.setPadding(new Insets(50, 50, screenHeight * .05, 50));
         
         //VBox of all gradeButtons
         VBox centerElements = new VBox();
-        centerElements.setAlignment(Pos.BOTTOM_CENTER);
+        centerElements.setAlignment(Pos.CENTER);
         centerElements.getChildren().addAll(stackStudentName, gradeButtons, pickAStudentBtn);
         
         //End of Center GUI Elements
@@ -453,7 +449,7 @@ public class Pick_A_Student extends Application {
                 
                 //Add student to the nice list fot that day.
                 
-                buttonSound(playButtonSound);
+                sound(playButtonSound, 1);
                 
                 System.out.println("Go");
                 
@@ -471,7 +467,7 @@ public class Pick_A_Student extends Application {
                 
                 //Add student to the nice list fot that day.
                 
-                buttonSound(playButtonSound);
+                sound(playApplauseSound, 3);
                 
                 System.out.println("Happy");
                 
@@ -482,16 +478,16 @@ public class Pick_A_Student extends Application {
         //----------------------------------------------------------------------
         
         //Horrified Face Button Listener
-        horrifiedFace.setOnMousePressed(new EventHandler<MouseEvent>() {
+        asleepFace.setOnMousePressed(new EventHandler<MouseEvent>() {
             
             @Override
             public void handle(MouseEvent event) {
                 
-                //Add specific student to the not here list for that day.
+                //Add specific student to the absent list for that day.
                 
-                buttonSound(playButtonSound);
+                sound(playSnoringSound, 4);
                
-                System.out.println("Sad");
+                System.out.println("absent");
                 
             }
             
@@ -507,7 +503,7 @@ public class Pick_A_Student extends Application {
                 
                 //Add specific student to Unsure List for that day.
                 
-                buttonSound(playButtonSound);
+                sound(playCricketsSound, 3);
                
                 System.out.println("unsure");
                 
@@ -522,14 +518,14 @@ public class Pick_A_Student extends Application {
 
     //--------------------------------------------------------------------------
     
-    //Button Sound Effect
-    public static void buttonSound(MediaPlayer buttonSound){
+    //sound method allows you to pass a sound and the time duration for which it will play.
+    public static void sound(MediaPlayer sound, int seconds){
         
-        buttonSound.play();
+        sound.play();
         
         try{
         
-            TimeUnit.SECONDS.sleep(1);
+            TimeUnit.SECONDS.sleep(seconds);
         
         }catch(InterruptedException ex){
         
@@ -537,9 +533,9 @@ public class Pick_A_Student extends Application {
         
         }
             
-        buttonSound.stop();
+        sound.stop();
         
-    }
+    }//End of sound method
    
     //--------------------------------------------------------------------------
     
