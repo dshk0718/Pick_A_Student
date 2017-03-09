@@ -177,7 +177,7 @@ public class Pick_A_Student extends Application {
         StackPane stackStudentName = new StackPane();
         stackStudentName.getChildren().addAll(whiteFilled, studentName);
         stackStudentName.setAlignment(Pos.TOP_CENTER);
-        stackStudentName.setPadding(new Insets(screenHeight * .1, 50, 50, 50));
+        stackStudentName.setPadding(new Insets(screenHeight * .035, 50, 50, 50));
         
         //Pick A Student Button
         Circle pickAStudent = new Circle(125);
@@ -308,7 +308,6 @@ public class Pick_A_Student extends Application {
             @Override
             public void handle(ActionEvent event) {
                 
-                course = new Course();
                 course.newCourse(new File(importFileName.getText()), courseName.getText());
                 createClassStage.close();
                 
@@ -337,7 +336,9 @@ public class Pick_A_Student extends Application {
                 
                 course = new Course();
                 
-                course = course.loadCourse(selectedFile.toString());
+                course = course.loadCourse(selectedFile);
+                
+                course.outputNames();
                 
             }
             
@@ -428,7 +429,7 @@ public class Pick_A_Student extends Application {
                 
                 try{
                     
-                    course.saveCourse();
+                    course.saveCourse(course);
                 
                 }catch(NullPointerException ex){
                 
